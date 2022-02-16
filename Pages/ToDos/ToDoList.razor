@@ -1,0 +1,71 @@
+﻿@page "/"
+
+<div class="container">
+    <h3 class="pb-3 text-left">To Do Manager App</h3>
+    @if (ToDo != null)
+    {
+        <EditForm Model="@ToDo" OnValidSubmit="HandleValidSubmitAsync">
+            <DataAnnotationsValidator />
+            <div class="form-row">
+                <div class="col">
+                    <InputText @bind-Value="ToDo.Description" class="form-control text-lg-left" placeholder="Add todo task here" />
+                    <ValidationMessage For="@(() => ToDo.Description)" />
+                </div>
+                <div class="col">
+                    <InputDate @bind-Value="ToDo.DeadLine" class="form-control text-lg-left" placeholder="Deadline" />
+                    <ValidationMessage For="@(() => ToDo.DeadLine)" />
+                </div>
+                <div class="col">
+                    <button class="btn btn-info" type="submit">
+                        ADD TODO
+                    </button>
+                </div>
+            </div>
+        </EditForm>
+        <br />
+        @if (ToDoListItems != null && ToDoListItems.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Ready?</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Deadline</th>
+                        <th scope="col">Complete</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var todo  in ToDoListItems)
+                    {
+                        <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" value="" @bind="@todo.IsComplete" />
+                                </div>
+                            </td>
+                            <td>@todo.Description</td>
+                            <td>@todo.DeadLine</td>
+                            <td>
+                                <button type="button" class="btn btn-primary m-2" @onclick="() => CompleteClick(todo)" >
+                                    Complete
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success m-2" @onclick="() => EditClick(todo)">
+                                    Edit
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger m-2" @onclick="() => DeleteClick(todo)">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            }
+        }
+</div>
